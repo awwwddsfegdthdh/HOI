@@ -82,3 +82,17 @@ When a new run is attempted, append:
 - hand-object output paths;
 - failure point if any;
 - command evidence or log path.
+
+## 2026-05-02 Version And GPU Gate Update
+
+- Local rollback commit created: `e616f6a Establish DexYCB single-trajectory plan gate`.
+- GitHub repository initialized through the GitHub plugin because local Git SSH/HTTPS push failed.
+- Remote repository: `awwwddsfegdthdh/HOI`
+- Remote `main` HEAD after baseline docs: `18f562ce47f7cd34172600f7f28ef36ba5ef57cc`
+- Plan document added: `C2HOI/docs/DEXYCB_SINGLE_TRAJECTORY_PLAN.md`
+- Operational rule added: container restarts/stops and process kills require explicit user approval for that specific action before execution.
+- Before restarting `dex`, `docker top dex` showed only idle root shell/tail/mihomo/Codex-related processes and no Python/training/inference task inside the container.
+- Host `nvidia-smi` showed other users' GPU jobs outside `dex`; cgroup checks indicated those GPU PIDs belonged to host user sessions, not the `dex` container.
+- `dex` was restarted at container start time `2026-05-02T14:42:15Z`.
+- After restart, `docker exec dex nvidia-smi` succeeded and NVML initialized inside the container.
+- After restart, `docker top dex` showed only PID 1 `/bin/bash`.
