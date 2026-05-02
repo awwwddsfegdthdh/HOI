@@ -29,6 +29,7 @@ Default sample:
 - Do not write into the raw DexYCB data tree.
 - Do not batch-process sequences during this task.
 - Do not clean existing experiment outputs unless explicitly approved.
+- Before restarting/stopping containers or killing processes, obtain explicit user approval for that specific action.
 - Before modifying project contents, maintain a rollback path through Git.
 - Use `git@github.com:awwwddsfegdthdh/HOI.git` as the intended version-management repository.
 - The repository is currently empty and local SSH access previously failed; use HTTPS or the GitHub plugin when SSH is blocked.
@@ -92,9 +93,9 @@ Default sample:
   - `contact_points.npy`, `sv_dict.npy`, `object.obj`, and `object.urdf` exist.
   - Output shapes and at least one visualization are manually inspected.
 
-## Current Blockers
+## Current Blockers And Notes
 
 - GitHub SSH access from the local machine failed with a Windows OpenSSH/Git SSH issue.
-- The GitHub repository is reachable over HTTPS but appears empty.
+- The GitHub repository was initialized through the GitHub plugin because local Git push authentication failed.
 - The local `gh` CLI is not installed.
-- Container GPU access currently reports `Failed to initialize NVML`.
+- Container GPU access was restored after restarting `dex` on 2026-05-02; future container restarts require explicit user approval first.
