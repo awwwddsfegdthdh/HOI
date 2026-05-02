@@ -83,6 +83,39 @@ When a new run is attempted, append:
 - failure point if any;
 - command evidence or log path.
 
+## 2026-05-02 Preconditions Check For Selected Sample
+
+Selected sample:
+
+- sequence: `20200709_141754`
+- camera: `836212060125`
+- source path: `/workspace/HOIDATA/DexYCB/20200709-subject-01/20200709-subject-01/20200709_141754/836212060125`
+- target work dir: `/workspace/C2HOI/work_dirs/dexycb/20200709_141754__836212060125`
+
+Resolved checks:
+
+- `docker exec dex nvidia-smi` succeeds after the approved container restart; NVML is initialized.
+- Conda activation works through `/root/anaconda3/etc/profile.d/conda.sh`.
+- Available relevant Conda envs include `dynhamr`, `foundationpose`, and `wilor`; `posetrack` is absent.
+- Sample has 72 RGB files, 72 aligned depth files, and 72 label files.
+- First RGB frame shape: `(480, 640, 3)`, dtype `uint8`.
+- First depth frame shape: `(480, 640)`, dtype `uint16`.
+- `meta.yml` reports `num_frames=72`, `ycb_ids=[1, 5, 6, 15]`, `ycb_grasp_ind=0`, `mano_sides=['right']`.
+- Target object id is `1`; according to DexYCB toolkit class mapping, this is `002_master_chef_can`.
+- Target mesh exists at `/workspace/HOIDATA/DexYCB/models/002_master_chef_can/textured_simple.obj`.
+- Target object mask id `1` is non-empty in all 72 frames; per-frame pixel count range observed: 5876 to 7602.
+- Label `pose_y` shape is `(4, 3, 4)` for the checked labels.
+- `pose.npz` contains sequence `pose_y` with shape `(72, 4, 7)`.
+
+Unresolved checks requiring user decision:
+
+- Local DexYCB root contains only `20200709-subject-01`, `20200709-subject-01.tar.gz`, `models`, and `models.tar.gz`; no `calibration/` directory was found.
+- The subject and model tarballs do not contain calibration/intrinsics files.
+- Official DexYCB toolkit expects calibration files under `$DEX_YCB_DIR/calibration/intrinsics/<serial>_640x480.yml`; this source is absent locally.
+- `objectpose` validation path cannot run as planned yet: `posetrack` env is absent, `/workspace/C2HOI/third_party/co-tracker` is absent, `/workspace/C2HOI/third_party/co-tracker/checkpoints/scaled_offline.pth` is absent, and `/workspace/C2HOI/ckpts/moge2/model.pt` is absent.
+- FoundationPose weights are present under `/workspace/C2HOI/FoundationPose/weights`.
+- DexYCB depth is present, so MoGe depth estimation is not needed for the first smoke path if using dataset depth.
+
 ## 2026-05-02 Version And GPU Gate Update
 
 - Local rollback commit created: `e616f6a Establish DexYCB single-trajectory plan gate`.
