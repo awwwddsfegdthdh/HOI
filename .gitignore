@@ -1,0 +1,11 @@
+*
+!.gitignore
+!C2HOI/
+C2HOI/*
+!C2HOI/docs/
+C2HOI/docs/*
+!C2HOI/docs/DEXYCB_SINGLE_TRAJECTORY_PLAN.md
+!C2HOI/docs/DEXYCB_PROCESSING_STATUS.md
+!C2HOI/tools/
+C2HOI/tools/*
+!C2HOI/tools/*.py
