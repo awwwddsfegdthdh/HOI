@@ -71,11 +71,12 @@ Default sample:
 
 ## Preconditions
 
-- Resolve `docker exec dex nvidia-smi` failing with `Failed to initialize NVML`.
-- Activate Conda in the container through `/root/anaconda3/etc/profile.d/conda.sh`.
-- Confirm whether a `posetrack` environment must be created for the `objectpose` validation path.
-- Confirm camera calibration source. If it cannot be found, stop and agree on an intrinsic fallback before processing.
-- Confirm `grasp_ind=0` maps to an available YCB mesh.
+- GPU/NVML: resolved. After the approved `dex` container restart on 2026-05-02, `docker exec dex nvidia-smi` succeeds.
+- Conda activation: resolved. Use `/root/anaconda3/etc/profile.d/conda.sh`; available envs include `dynhamr`, `foundationpose`, and `wilor`.
+- Sample integrity: resolved. For `20200709_141754/836212060125`, 72 RGB, depth, and label frames are present and aligned.
+- Target object mapping: resolved. DexYCB class id `1` maps to `002_master_chef_can`; `grasp_ind=0` selects `ycb_ids[0]=1`; `/workspace/HOIDATA/DexYCB/models/002_master_chef_can/textured_simple.obj` exists.
+- Camera calibration: unresolved. The local DexYCB root currently lacks the expected `calibration/` directory. Stop before generating `camera_data.json` until the source is approved.
+- Objectpose validation dependencies: unresolved. The container currently has no `posetrack` Conda env, no `/workspace/C2HOI/third_party/co-tracker`, no `scaled_offline.pth`, and no `ckpts/moge2/model.pt`. Since DexYCB depth exists, MoGe can be avoided for the first run, but CoTracker/`posetrack` are still required if running `objectpose/estimate_object_pose.py sequence`.
 
 ## Verification
 
@@ -99,3 +100,5 @@ Default sample:
 - The GitHub repository was initialized through the GitHub plugin because local Git push authentication failed.
 - The local `gh` CLI is not installed.
 - Container GPU access was restored after restarting `dex` on 2026-05-02; future container restarts require explicit user approval first.
+- The next approval decision is required before processing: either provide/copy the official DexYCB `calibration/` folder, approve using an external official calibration source for camera `836212060125`, or approve a fallback intrinsic source.
+- The `objectpose` validation track requires approval before environment/dependency installation or downloading CoTracker assets.
